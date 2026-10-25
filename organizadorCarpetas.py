@@ -100,6 +100,7 @@ def nombre_disponible(ruta_destino, nombre_archivo) :
     ruta_completa = os.path.join(ruta_destino,nombre_archivo) 
 
     if not os.path.exists(ruta_completa) :
+
         return nombre_archivo
 
     # Separar el nombre de la extensión
@@ -111,8 +112,11 @@ def nombre_disponible(ruta_destino, nombre_archivo) :
 
     # comprueba hasta crear uno diferente
     while os.path.exists(ruta_nueva):
+
         contador += 1 
+
         nuevo_nombre = nombre + "_" + str(contador) + extension
+
         ruta_nueva = os.path.join(ruta_destino,nuevo_nombre)
 
     return nuevo_nombre
@@ -120,16 +124,18 @@ def nombre_disponible(ruta_destino, nombre_archivo) :
 # Funcion donde mueve los archivos donde pertenecen 
 def clasificar_archivo(ruta_origen , nombre_archivo, ruta_destino, historial):
 
+    # obtener extension
     extension = obtener_extension(nombre_archivo)
 
     # crear carpeta con la extension corresponda
     carpeta_extension = os.path.join(ruta_destino , extension)
     os.makedirs(carpeta_extension, exist_ok=True)
 
+    # buscar nombre libre
     nombre_libre = nombre_disponible(carpeta_extension, nombre_archivo)
 
+    # construir rutas completas
     archivo_origen = os.path.join(ruta_origen, nombre_archivo)
-
     archivo_destino = os.path.join(carpeta_extension, nombre_libre)
 
     # obtener el tamaño del archivo
@@ -142,3 +148,32 @@ def clasificar_archivo(ruta_origen , nombre_archivo, ruta_destino, historial):
     historial.append(archivo_origen + " -> " + archivo_destino)
 
     return tamano
+
+# Funcion recursiva de movimiento de archivo
+def clasificar_carpeta_recursivo(ruta_origen, ruta_destino, historial) :
+
+    total_bytes = 0
+
+    # recorrer los elementos dentro el origen
+    for elemento in os.listdir(ruta_origen):
+
+        ruta_completa = os.path.join(ruta_origen, elemento)
+
+        # comprobar si es una carpeta
+        if os.path.isdir(ruta_completa) :
+
+            bytes_subcarpetas = clasificar_carpeta_recursivo(ruta_completa, ruta_destino, historial)
+
+            total_bytes += bytes_subcarpetas
+
+        else :
+
+            bytes_archivo = clasificar_archivo(ruta_origen, elemento, ruta_destino, historial)
+
+            total_bytes += bytes_archivo
+
+    return total_bytes
+
+
+
+
