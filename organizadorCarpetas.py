@@ -15,7 +15,7 @@ from rich.table import Table
 console = Console()
 
 
-# Funciones
+# FUNCIONES
 # Funcion con los paneles, estilos del titulo del programa
 def mostrar_cabecera(consola) :
           
@@ -179,6 +179,9 @@ def contar_archivos_recursivo(ruta):
 
     total_archivos = 0
 
+    if not os.path.isdir(ruta):
+            return 0
+
      # recorrer los elementos dentro de la carpeta
     for elemento in os.listdir(ruta):
 
@@ -238,7 +241,7 @@ def mostrar_informe(consola, movidos, tamano_total, en_origen, en_destino, histo
 
 
 
-# Programa principal
+# PROGRAMA PRINCIPAL
 
 # variable del historial
 historial = []
@@ -255,9 +258,6 @@ movidos = len(historial)
 
 en_origen = contar_archivos_recursivo(ruta_origen)
 
-if os.path.isdir(ruta_destino):
-    en_destino = contar_archivos_recursivo(ruta_destino)
-else:
-    en_destino = 0
+en_destino = contar_archivos_recursivo(ruta_destino)
 
 mostrar_informe( console, movidos, tamano_total, en_origen, en_destino, historial)
