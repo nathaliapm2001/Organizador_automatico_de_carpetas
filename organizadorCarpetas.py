@@ -8,6 +8,7 @@ from rich.panel import Panel
 from rich.prompt import Prompt
 import os
 import sys
+import shutil
 
 # variable de la consola de rich
 console = Console()
@@ -33,12 +34,12 @@ def peticion_rutas(consola) :
     else:
         consola.print(Panel.fit("La carpeta no existe o no es una carpeta", border_style="red"))
 
-    #comprueba si existe algo en esa ruta y comprueba si existe esa carpeta
+    # comprueba si existe algo en esa ruta y comprueba si existe esa carpeta
     if os.path.exists(ruta_destino) and not os.path.isdir(ruta_destino):
         consola.print(Panel.fit("Ruta invalida", border_style="red"))
         sys.exit()
 
-    #llamar funcion de comprobacion de una dentro de otra
+    # llamar funcion de comprobacion de una dentro de otra
     if una_dentro_de_otra(ruta_origen, ruta_destino):
         consola.print(Panel.fit("Origen y destino no pueden ser iguales o estar uno dentro del otro", border_style="red"))
 
@@ -54,10 +55,10 @@ def obtener_extension(nombre_archivo) :
 
     else :
 
-     #converrtir la extensionn en minuscula
+     # converrtir la extensionn en minuscula
      extension = extension.lower()
 
-     #eliminar el punto de la extension
+     # eliminar el punto de la extension
      extension= extension[1:]
 
      return extension
@@ -74,21 +75,20 @@ def tamano_legible(tamano_bytes):
         tamano = tamano/1024
         indice +=1
 
-    #devolver tamaño y su unidad
+    # devolver tamaño y su unidad
     if indice == 0:
         return str(tamano) + " bytes"
     else:
         return str( format(tamano , ".2f")) + " " + unidades[indice]
        
-
 # Funcion comprobar si estan dentro una de otra 
 def una_dentro_de_otra(ruta_a, ruta_b):
 
-    #obtiene la ruta absoluta
+    # obtiene la ruta absoluta
     ruta_a = os.path.abspath(ruta_a) + os.sep
     ruta_b = os.path.abspath(ruta_b) + os.sep
 
-    #detecta si esta una dentro de otra
+    # detecta si esta una dentro de otra
     return ruta_a.startswith(ruta_b) or ruta_b.startswith(ruta_a)
 
 # Funcion comprobar si el nommbre esta disponible 
@@ -97,21 +97,48 @@ def nombre_disponible(ruta_destino, nombre_archivo) :
     contador = 1
 
     # Unir la ruta con el nombre del archivo 
-    rutaCompleta = os.path.join(ruta_destino,nombre_archivo) 
+    ruta_completa = os.path.join(ruta_destino,nombre_archivo) 
 
-    if not os.path.exists(rutaCompleta) :
+    if not os.path.exists(ruta_completa) :
         return nombre_archivo
 
     # Separar el nombre de la extensión
     nombre, extension = os.path.splitext(nombre_archivo)
 
      # Crear el primer nombre alternativo
-    nuevoNombre = nombre + "_" + str(contador) + extension
-    rutaNueva = os.path.join(ruta_destino, nuevoNombre)
+    nuevo_nombre = nombre + "_" + str(contador) + extension
+    ruta_nueva = os.path.join(ruta_destino, nuevo_nombre)
 
-    while os.path.exists(rutaNueva):
+    # comprueba hasta crear uno diferente
+    while os.path.exists(ruta_nueva):
         contador += 1 
-        nuevoNombre = nombre + "_" + str(contador) + extension
-        rutaNueva = os.path.join(ruta_destino,nuevoNombre)
+        nuevo_nombre = nombre + "_" + str(contador) + extension
+        ruta_nueva = os.path.join(ruta_destino,nuevo_nombre)
 
-    return nuevoNombre
+    return nuevo_nombre
+
+# Funcion donde mueve los archivos donde pertenecen 
+def clasificar_archivo(ruta_origen , nombre_archivo, ruta_destino, historial):
+
+    extension = obtener_extension(nombre_archivo)
+
+    # crear carpeta con la extension corresponda
+    carpeta_extension = os.path.join(ruta_destino , extension)
+    os.makedirs(carpeta_extension, exist_ok=True)
+
+    nombre_libre = nombre_disponible(carpeta_extension, nombre_archivo)
+
+    archivo_origen = os.path.join(ruta_origen, nombre_archivo)
+
+    archivo_destino = os.path.join(carpeta_extension, nombre_libre)
+
+    # obtener el tamaño del archivo
+    tamano = os.path.getsize(archivo_origen)
+
+    # Mueve ele archivo
+    shutil.move(archivo_origen,archivo_destino)
+
+    # Guardar en el historial
+    historial.append(archivo_origen + " -> " + archivo_destino)
+
+    return tamano
