@@ -74,5 +74,14 @@ def tamano_legible(tamano_bytes):
     else:
         return f"{tamano:.2f} {unidades[indice]}"
 
+#Funcion comprobar si estan dentro una de otra 
+def una_dentro_de_otra(ruta_a, ruta_b):
+
+    #obtiene la ruta absoluta
+    ruta_a = os.path.abspath(ruta_a) + os.sep
+    ruta_b = os.path.abspath(ruta_b) + os.sep
+
+    #detecta si esta una dentro de otra
+    return ruta_a.startswith(ruta_b) or ruta_b.startswith(ruta_a)
 
 
