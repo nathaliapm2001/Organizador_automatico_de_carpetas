@@ -7,6 +7,7 @@ from rich.console import Console
 from rich.panel import Panel
 from rich.prompt import Prompt
 import os
+import sys
 
 # variable de la consola de rich
 console = Console()
@@ -24,7 +25,7 @@ def peticion_rutas(consola) :
 
     ruta_origen = Prompt.ask("[cyan]Introduce la carpeta de origen[/cyan]",console=consola)
 
-    ruta_destino = Prompt.ask("[cyan]Introduce la carpeta de origen[/cyan]",console=consola)
+    ruta_destino = Prompt.ask("[cyan]Introduce la carpeta de destino[/cyan]",console=consola)
 
     # Comprueba si corresponde a una carpeta existente
     if os.path.isdir(ruta_origen):
@@ -34,6 +35,6 @@ def peticion_rutas(consola) :
 
     #comprueba si existe algo en esa ruta y comprueba si existe esa carpeta
     if os.path.exists(ruta_destino) and not os.path.isdir(ruta_destino):
-        
-        #crear carpeta
+        consola.print(Panel.fit("Ruta invalida", border_style="red"))
+        sys.exit()
         
