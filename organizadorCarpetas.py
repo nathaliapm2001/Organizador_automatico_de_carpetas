@@ -56,5 +56,23 @@ def obtener_extension(nombre_archivo) :
 
      return extension
 
+#Funcion de conversion de tamaño al mas adecuado
+def tamano_legible(tamano_bytes):
+
+    unidades = ["bytes" , "KB", "MB" , "GB"]
+    tamano = tamano_bytes
+    indice  = 0
+
+    # recorre hasta la unidad mas adecuada
+    while tamano >= 1024 and indice < 3 :
+        tamano = tamano/1024
+        indice +=1
+
+    #devolver tamaño y su unidad
+    if indice == 0:
+        return f"{tamano} bytes"
+    else:
+        return f"{tamano:.2f} {unidades[indice]}"
+
 
 
