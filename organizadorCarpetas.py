@@ -9,17 +9,17 @@ from rich.prompt import Prompt
 import os
 import sys
 import shutil
+from rich.table import Table
 
 # variable de la consola de rich
 console = Console()
 
 
-
-
+# Funciones
 # Funcion con los paneles, estilos del titulo del programa
-def mostrar_cabecera() :
+def mostrar_cabecera(consola) :
           
-    console.print(Panel.fit(f"[deep_pink4] {"Organizador automático de carpetas"}[/deep_pink4]"))
+    consola.print(Panel.fit(f"[deep_pink4] {"Organizador automático de carpetas"}[/deep_pink4]"))
 
 # Funcion con la peticion de las rutas de las carpetas
 def peticion_rutas(consola) :
@@ -195,5 +195,69 @@ def contar_archivos_recursivo(ruta):
 
     return total_archivos
 
+# Función para mostrar el informe final
+def mostrar_informe(consola, movidos, tamano_total, en_origen, en_destino, historial):
+
+    # crear tabla
+    tabla = Table(title= " Informe final ")
+
+    # columnas
+    tabla.add_column("Concepto", style="cyan")
+    tabla.add_column("Valor", justify="right")
+
+    # añadir resultados
+    tabla.add_row("Archivos movidos", str(movidos))
+    tabla.add_row("Tamaño total movido", tamano_legible(tamano_total))
+
+    # comprobar si quedan archvios en el origeen
+    if en_origen == 0:
+        restantes = "[green]" + str(en_origen) + "[/green]"
+    else:
+        restantes = "[red]" + str(en_origen) + "[/red]"
+
+    tabla.add_row("Archivos restantes en origen", restantes)
+    tabla.add_row("Archivos en destino", str(en_destino))
+
+    # mostrar primera tabla
+    consola.print(tabla)
+
+    # crear segunda tabla
+    tabla_movimientos = Table(title="Movimientos realizados")
+
+    tabla_movimientos.add_column("Numero", justify="right")
+    tabla_movimientos.add_column("Origen -> Destino")
+
+    contador = 1
+
+    for movimiento in historial:
+        tabla_movimientos.add_row(str(contador), movimiento)
+        contador += 1
+
+    # mostrar segunda tabla
+    consola.print(tabla_movimientos)
 
 
+
+# Programa principal
+
+# variable del historial
+historial = []
+
+
+mostrar_cabecera(console)
+
+ruta_origen, ruta_destino = peticion_rutas(console)
+
+tamano_total = clasificar_carpeta_recursivo(ruta_origen, ruta_destino, historial)
+
+# contar los archivos movidos
+movidos = len(historial)
+
+en_origen = contar_archivos_recursivo(ruta_origen)
+
+if os.path.isdir(ruta_destino):
+    en_destino = contar_archivos_recursivo(ruta_destino)
+else:
+    en_destino = 0
+
+mostrar_informe( console, movidos, tamano_total, en_origen, en_destino, historial)
