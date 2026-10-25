@@ -31,13 +31,19 @@ def peticion_rutas(consola) :
     if os.path.isdir(ruta_origen):
         consola.print("La carpeta existe")
     else:
-        consola.print("La carpeta no existe")
+        consola.print(Panel.fit("La carpeta no existe o no es una carpeta", border_style="red"))
 
     #comprueba si existe algo en esa ruta y comprueba si existe esa carpeta
     if os.path.exists(ruta_destino) and not os.path.isdir(ruta_destino):
         consola.print(Panel.fit("Ruta invalida", border_style="red"))
         sys.exit()
 
+    #llamar funcion de comprobacion de una dentro de otra
+    if una_dentro_de_otra(ruta_origen, ruta_destino):
+        consola.print(Panel.fit("Origen y destino no pueden ser iguales o estar uno dentro del otro", border_style="red"))
+
+    return ruta_origen, ruta_destino
+        
 # Funscion obtiene nombre y extension del archivo        
 def obtener_extension(nombre_archivo) :
 
