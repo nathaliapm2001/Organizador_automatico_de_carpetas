@@ -15,7 +15,7 @@ console = Console()
 
 
 
-# funcion con los paneles, estilos del titulo del programa
+# Funcion con los paneles, estilos del titulo del programa
 def mostrar_cabecera() :
           
     console.print(Panel.fit(f"[deep_pink4] {"Organizador automático de carpetas"}[/deep_pink4]"))
@@ -37,4 +37,24 @@ def peticion_rutas(consola) :
     if os.path.exists(ruta_destino) and not os.path.isdir(ruta_destino):
         consola.print(Panel.fit("Ruta invalida", border_style="red"))
         sys.exit()
-        
+
+# Funscion obtiene nombre y extension del archivo        
+def obtener_extension(nombre_archivo) :
+
+    nombre, extension = os.path.splitext(nombre_archivo)
+
+    if extension == "" : 
+        return "sin_extension"
+
+    else :
+
+     #converrtir la extensionn en minuscula
+     extension = extension.lower()
+
+     #eliminar el punto de la extension
+     extension= extension[1:]
+
+     return extension
+
+
+
