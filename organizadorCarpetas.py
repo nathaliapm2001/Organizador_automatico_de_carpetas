@@ -174,6 +174,26 @@ def clasificar_carpeta_recursivo(ruta_origen, ruta_destino, historial) :
 
     return total_bytes
 
+# Funcion recursiva coontador de archivos
+def contar_archivos_recursivo(ruta):
+
+    total_archivos = 0
+
+     # recorrer los elementos dentro de la carpeta
+    for elemento in os.listdir(ruta):
+
+        ruta_completa = os.path.join(ruta, elemento)
+
+        # entrar en subcarpetas
+        if os.path.isdir(ruta_completa):
+
+            total_archivos += contar_archivos_recursivo(ruta_completa)
+
+        elif os.path.isfile(ruta_completa):
+
+            total_archivos += 1
+
+    return total_archivos
 
 
 
