@@ -62,7 +62,7 @@ def obtener_extension(nombre_archivo) :
 
      return extension
 
-#Funcion de conversion de tamaño al mas adecuado
+# Funcion de conversion de tamaño al mas adecuado
 def tamano_legible(tamano_bytes):
 
     unidades = ["bytes" , "KB", "MB" , "GB"]
@@ -76,11 +76,12 @@ def tamano_legible(tamano_bytes):
 
     #devolver tamaño y su unidad
     if indice == 0:
-        return f"{tamano} bytes"
+        return str(tamano) + " bytes"
     else:
-        return f"{tamano:.2f} {unidades[indice]}"
+        return str( format(tamano , ".2f")) + " " + unidades[indice]
+       
 
-#Funcion comprobar si estan dentro una de otra 
+# Funcion comprobar si estan dentro una de otra 
 def una_dentro_de_otra(ruta_a, ruta_b):
 
     #obtiene la ruta absoluta
@@ -90,4 +91,27 @@ def una_dentro_de_otra(ruta_a, ruta_b):
     #detecta si esta una dentro de otra
     return ruta_a.startswith(ruta_b) or ruta_b.startswith(ruta_a)
 
+# Funcion comprobar si el nommbre esta disponible 
+def nombre_disponible(ruta_destino, nombre_archivo) :
 
+    contador = 1
+
+    # Unir la ruta con el nombre del archivo 
+    rutaCompleta = os.path.join(ruta_destino,nombre_archivo) 
+
+    if not os.path.exists(rutaCompleta) :
+        return nombre_archivo
+
+    # Separar el nombre de la extensión
+    nombre, extension = os.path.splitext(nombre_archivo)
+
+     # Crear el primer nombre alternativo
+    nuevoNombre = nombre + "_" + str(contador) + extension
+    rutaNueva = os.path.join(ruta_destino, nuevoNombre)
+
+    while os.path.exists(rutaNueva):
+        contador += 1 
+        nuevoNombre = nombre + "_" + str(contador) + extension
+        rutaNueva = os.path.join(ruta_destino,nuevoNombre)
+
+    return nuevoNombre
