@@ -206,7 +206,7 @@ def mostrar_informe(consola, movidos, tamano_total, en_origen, en_destino, histo
 
     # columnas
     tabla.add_column("Concepto", style="cyan")
-    tabla.add_column("Valor", justify="right")
+    tabla.add_column("Valor", justify="center" , style="deep_pink4")
 
     # añadir resultados
     tabla.add_row("Archivos movidos", str(movidos))
@@ -227,8 +227,8 @@ def mostrar_informe(consola, movidos, tamano_total, en_origen, en_destino, histo
     # crear segunda tabla
     tabla_movimientos = Table(title="Movimientos realizados")
 
-    tabla_movimientos.add_column("Numero", justify="right")
-    tabla_movimientos.add_column("Origen -> Destino")
+    tabla_movimientos.add_column("Numero", justify="right", style="deep_pink4")
+    tabla_movimientos.add_column("Origen -> Destino" )
 
     contador = 1
 
