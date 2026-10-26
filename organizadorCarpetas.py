@@ -33,6 +33,7 @@ def peticion_rutas(consola) :
         consola.print("La carpeta existe")
     else:
         consola.print(Panel.fit("La carpeta no existe o no es una carpeta", border_style="red"))
+        sys.exit()
 
     # comprueba si existe algo en esa ruta y comprueba si existe esa carpeta
     if os.path.exists(ruta_destino) and not os.path.isdir(ruta_destino):
@@ -153,7 +154,7 @@ def clasificar_archivo(ruta_origen , nombre_archivo, ruta_destino, historial):
 def clasificar_carpeta_recursivo(ruta_origen, ruta_destino, historial) :
 
     total_bytes = 0
-
+    
     # recorrer los elementos dentro el origen
     for elemento in os.listdir(ruta_origen):
 
