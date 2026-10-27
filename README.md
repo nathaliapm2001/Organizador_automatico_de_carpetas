@@ -10,7 +10,7 @@ Al finalizar, genera un **informe visual en consola** mediante la librería **Ri
 
 ## 👤 Autor
 
-**[Nathalia Piñera Molina]**
+**Nathalia Piñera Molina**
 
 ---
 
