@@ -27,6 +27,12 @@ console = Console()
 # FUNCIONES
 # Funcion con los paneles, estilos del titulo del programa
 def mostrar_cabecera(consola):
+    """
+    Muestra la cabezera del programa mediante un panel de las librerias de Rich  
+
+    Arg: 
+        consola: Objecto Console utilizado para mostrar el panel
+    """
 
     consola.print(
         Panel.fit(f"[deep_pink4] {"Organizador automático de carpetas"}[/deep_pink4]"))
@@ -35,6 +41,16 @@ def mostrar_cabecera(consola):
 
 
 def peticion_rutas(consola):
+    """
+
+    Pide las rutas de origen y destino y comprueba su validez
+
+    Arg:
+        consola: Objecto Console utilizado para mostrar mensajes
+
+    returns: 
+        Una tupla de ruta_origen y ruta_destino
+    """
 
     ruta_origen = Prompt.ask(
         "[cyan]Introduce la carpeta de origen[/cyan]", console=consola)
@@ -66,6 +82,9 @@ def peticion_rutas(consola):
 
 
 def obtener_extension(nombre_archivo):
+    """
+
+    """
 
     nombre, extension = os.path.splitext(nombre_archivo)
 
