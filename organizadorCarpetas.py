@@ -365,7 +365,7 @@ if __name__ == "__main__":
     console.print(tamano_legible(500))
     console.print(tamano_legible(1024))
     console.print(tamano_legible(2048576))
-    console.print(tamano_legible(1073741824))
+    console.print(tamano_legible(5073741824))
 
 
 # PROGRAMA PRINCIPAL
