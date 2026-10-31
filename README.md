@@ -54,15 +54,32 @@ Al finalizar, genera un **informe visual en consola** mediante la librería **Ri
 ```text
 Organizador_automatico_de_carpetas/
 │
-├── .venv/                       # Entorno virtual (ignorado por Git)
-├── carpeta_prueba/              # Archivos y subcarpetas de prueba
-├── organizados/                 # Destino generado durante las pruebas
+├── carpeta_prueba/              # Archivos y subcarpetas para la clasificación
+│   ├── foto.jpg
+│   ├── informe.pdf
+│   ├── notas.txt
+│   ├── LEEME
+│   └── trabajos/
+│       ├── documentos.docx
+│       └── antiguos/
+│           ├── datos.csv
+│           └── notas.txt
 │
-├── organizadorCarpetas.py       # Código principal
+├── organizadorCarpetas.py       # Programa principal
+├── tamano_legible.py            # Pruebas de conversión de tamaños
 ├── requirements.txt             # Dependencias del proyecto
-├── README.md                    # Documentación
-└── .gitignore                   # Exclusiones de Git
+├── README.md                    # Documentación del proyecto
+└── .gitignore                   # Archivos excluidos del control de versiones
 ```
+Durante el desarrollo y las ejecuciones de prueba también pueden generarse las siguientes carpetas:
+
+.venv/: entorno virtual de Python.
+
+__pycache__/: caché generada automáticamente por Python.
+
+organizados/: carpeta de destino donde se clasifican los archivos.
+
+pruebas/: carpetas auxiliares utilizadas para los casos de prueba.
 
 ---
 
@@ -156,6 +173,23 @@ Muestra un registro numerado de los archivos trasladados, indicando su ruta de o
 
 ---
 
+## 🔢 Pruebas de la función tamano_legible()
+
+También se ha creado el archivo tamano_legible.py para comprobar de forma independiente la conversión de tamaños.
+
+| Bytes introducidos | Resultado |
+|---|---:|
+| 500 | 500 bytes |
+| 1024 | 1.00 KB |
+| 2048576 | 1.95 MB |
+| 5073741824 | 4.72 GB |
+
+Para ejecutar estas pruebas:
+
+python tamano_legible.py
+
+Este archivo importa la función tamano_legible() del organizador, permitiendo comprobar su funcionamiento sin ejecutar la clasificación de archivos.
+
 ## ⚠️ Consideraciones importantes
 
 - El programa **mueve los archivos, no los copia**.
@@ -163,4 +197,5 @@ Muestra un registro numerado de los archivos trasladados, indicando su ruta de o
 - Los archivos existentes en destino no deben sobrescribirse.
 - Las carpetas originales no se eliminan después de mover su contenido.
 - El entorno virtual `.venv` no se incluye en el repositorio.
+- Las rutas de origen y destino deben ser distintas y no estar una dentro de la otra.
 
