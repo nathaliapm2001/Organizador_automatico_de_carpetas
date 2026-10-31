@@ -65,11 +65,14 @@ Organizador_automatico_de_carpetas/
 │           ├── datos.csv
 │           └── notas.txt
 │
+├── pruebas/                     # Carpetas para realizar las pruebas
+│   └── origen_vacio/            # Prueba 1: carpeta de origen sin archivos
+│
 ├── organizadorCarpetas.py       # Programa principal
 ├── tamano_legible.py            # Pruebas de conversión de tamaños
 ├── requirements.txt             # Dependencias del proyecto
 ├── README.md                    # Documentación del proyecto
-└── .gitignore                   # Archivos excluidos del control de versiones
+└── .gitignore                   # Archivos excluidos de Gi
 ```
 Durante el desarrollo y las ejecuciones de prueba también pueden generarse las siguientes carpetas:
 
