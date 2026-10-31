@@ -1,14 +1,10 @@
 """
-Organizador de carpetas 
+Organizador automático de carpetas.
 
-Este programa permite organizar automáticamente los archivos de una carpeta según su extensión, 
-utilizando programación modular y recursividad.
+Programa que clasifica y mueve archivos según su extensión,
+recorriendo carpetas y subcarpetas de forma recursiva.
 
-El programa recorre la carpeta de origen y todas sus subcarpetas, clasifica los archivos y los 
-mueve a una carpeta de destino, creando automáticamente las subcarpetas necesarias.
-
-Al finalizar, genera un informe visual en consola mediante la librería Rich, mostrando los archivos 
-movidos, el espacio ocupado y el historial de movimientos.
+Muestra un informe final de los movimientos utilizando Rich.
 """
 
 # importacion de las librerias
@@ -32,14 +28,15 @@ def mostrar_cabecera(consola):
 
     Arg: 
         consola: Objecto Console utilizado para mostrar el panel
+
+    Returns:
+        None
     """
 
     consola.print(
         Panel.fit(f"[deep_pink4] {"Organizador automático de carpetas"}[/deep_pink4]"))
 
 # Funcion con la peticion de las rutas de las carpetas
-
-
 def peticion_rutas(consola):
     """
 
@@ -75,14 +72,20 @@ def peticion_rutas(consola):
     if una_dentro_de_otra(ruta_origen, ruta_destino):
         consola.print(Panel.fit(
             "Origen y destino no pueden ser iguales o estar uno dentro del otro", border_style="red"))
-
+        sys.exit()
+        
     return ruta_origen, ruta_destino
 
 # Funscion obtiene nombre y extension del archivo
-
-
 def obtener_extension(nombre_archivo):
     """
+    Obtiene la extensión de un archivo en minuscula y sin el punto
+
+    Args:
+        nombre_archivo: Nombre del archivo a comprobar
+
+    Returns:
+        Extenesión del archivo o "sin_extension" si no tiene
 
     """
 
@@ -102,10 +105,17 @@ def obtener_extension(nombre_archivo):
         return extension
 
 # Funcion de conversion de tamaño al mas adecuado
-
-
 def tamano_legible(tamano_bytes):
+    """
+    Convierte de bytes a la unidad más adecuada
 
+    Args:
+        tamano_bytes: Tamaño original del arcchivo en bytes
+
+    Resturns:
+        Una cadena de texto con el tamaño expresado en el más aduacdo 
+    """
+    
     unidades = ["bytes", "KB", "MB", "GB"]
     tamano = tamano_bytes
     indice = 0
@@ -122,9 +132,17 @@ def tamano_legible(tamano_bytes):
         return str(format(tamano, ".2f")) + " " + unidades[indice]
 
 # Funcion comprobar si estan dentro una de otra
-
-
 def una_dentro_de_otra(ruta_a, ruta_b):
+    """
+    Comprueba si dos rutas son iguales o si una esta dentro de la otra
+
+    Args:
+        ruta_a: Primera ruta que se comprueba
+        ruta_b: Segunda ruta que se comprueba
+    
+    Returns:
+        True si son iguales o estan anidadas, False en caso contrario
+    """
 
     # obtiene la ruta absoluta
     ruta_a = os.path.abspath(ruta_a) + os.sep
@@ -134,9 +152,17 @@ def una_dentro_de_otra(ruta_a, ruta_b):
     return ruta_a.startswith(ruta_b) or ruta_b.startswith(ruta_a)
 
 # Funcion comprobar si el nommbre esta disponible
-
-
 def nombre_disponible(ruta_destino, nombre_archivo):
+    """
+    Busca un nombre de archivo libre para no sobrescribir archivos
+
+    Args:
+        ruta_destino: Carpeta donde queremos guardar el archivo
+        nombre_archivo: Nombre original del archivo
+
+    Returns:
+        Nombre disponible, añadiendo un número si ya existe uno con el mismo nombre.
+    """
 
     contador = 1
 
@@ -166,9 +192,19 @@ def nombre_disponible(ruta_destino, nombre_archivo):
     return nuevo_nombre
 
 # Funcion donde mueve los archivos donde pertenecen
-
-
 def clasificar_archivo(ruta_origen, nombre_archivo, ruta_destino, historial):
+    """
+    Mueve un archivo a la subcarpeta correspondiente a su extensión
+
+    Args:
+        ruta_origen: Carpeta donde se encuentra el archivo
+        nombre_archivo: Nombre del archivo que queremos mover
+        ruta_destino: Carpeta donde organizaremos los archivos
+        historial: Lista donde se registra el movimiento realizado
+
+    Returns:
+        Tamaño en bytes del archivo movido
+    """
 
     # obtener extension
     extension = obtener_extension(nombre_archivo)
@@ -196,9 +232,18 @@ def clasificar_archivo(ruta_origen, nombre_archivo, ruta_destino, historial):
     return tamano
 
 # Funcion recursiva de movimiento de archivo
-
-
 def clasificar_carpeta_recursivo(ruta_origen, ruta_destino, historial):
+    """
+    Recorre recursivamente una carpeta y clasifica todos sus archivos.
+
+    Args:
+        ruta_origen: Carpeta que queremos recorrer
+        ruta_destino: Carpeta donde organizaremos los archivos
+        historial: Lista donde se registran los movimientos
+
+    Returns:
+        Total de bytes movidos, incluyendo las subcarpetas
+    """
 
     total_bytes = 0
 
@@ -225,9 +270,16 @@ def clasificar_carpeta_recursivo(ruta_origen, ruta_destino, historial):
     return total_bytes
 
 # Funcion recursiva coontador de archivos
-
-
 def contar_archivos_recursivo(ruta):
+    """
+    Cuenta los archivos de una carpeta y todas sus subcarpetas
+
+    Args:
+        ruta: Carpeta donde comenzaremos el recorrido
+
+    Returns:
+        Número total de archivos encontrados
+    """
 
     total_archivos = 0
 
@@ -251,9 +303,21 @@ def contar_archivos_recursivo(ruta):
     return total_archivos
 
 # Función para mostrar el informe final
-
-
 def mostrar_informe(consola, movidos, tamano_total, en_origen, en_destino, historial):
+    """
+    Muestra el resumen final y el historial de movimientos con Rich
+
+    Args:
+        consola: Objeto Console utilizado para mostrar las tablas
+        movidos: Número de archivos movidos
+        tamano_total: Tamaño total movido en bytes
+        en_origen: Número de archivos restantes en origen
+        en_destino: Número de archivos presentes en destino
+        historial: Lista con los movimientos realizados
+
+    Returns:
+        None
+    """
 
     # crear tabla
     tabla = Table(title=" Informe final ")
