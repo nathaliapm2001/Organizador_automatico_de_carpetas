@@ -16,9 +16,6 @@ import sys
 import shutil
 from rich.table import Table
 
-# variable de la consola de rich
-console = Console()
-
 
 # FUNCIONES
 # Funcion con los paneles, estilos del titulo del programa
@@ -73,7 +70,7 @@ def peticion_rutas(consola):
         consola.print(Panel.fit(
             "Origen y destino no pueden ser iguales o estar uno dentro del otro", border_style="red"))
         sys.exit()
-        
+
     return ruta_origen, ruta_destino
 
 # Funscion obtiene nombre y extension del archivo
@@ -286,7 +283,7 @@ def contar_archivos_recursivo(ruta):
     if not os.path.isdir(ruta):
         return 0
 
-        # recorrer los elementos dentro de la carpeta
+    # recorrer los elementos dentro de la carpeta
     for elemento in os.listdir(ruta):
 
         ruta_completa = os.path.join(ruta, elemento)
@@ -359,23 +356,26 @@ def mostrar_informe(consola, movidos, tamano_total, en_origen, en_destino, histo
 
 
 # PROGRAMA PRINCIPAL
-# variable del historial
-historial = []
+if __name__ == "__main__":
+
+    # variable de la consola de rich
+    console = Console()
+    
+    # variable del historial
+    historial = []
 
 
-mostrar_cabecera(console)
+    mostrar_cabecera(console)
 
-ruta_origen, ruta_destino = peticion_rutas(console)
+    ruta_origen, ruta_destino = peticion_rutas(console)
 
-tamano_total = clasificar_carpeta_recursivo(
-    ruta_origen, ruta_destino, historial)
+    tamano_total = clasificar_carpeta_recursivo(ruta_origen, ruta_destino, historial)
 
-# contar los archivos movidos
-movidos = len(historial)
+    # contar los archivos movidos
+    movidos = len(historial)
 
-en_origen = contar_archivos_recursivo(ruta_origen)
+    en_origen = contar_archivos_recursivo(ruta_origen)
 
-en_destino = contar_archivos_recursivo(ruta_destino)
+    en_destino = contar_archivos_recursivo(ruta_destino)
 
-mostrar_informe(console, movidos, tamano_total,
-                en_origen, en_destino, historial)
+    mostrar_informe(console, movidos, tamano_total, en_origen, en_destino, historial)
