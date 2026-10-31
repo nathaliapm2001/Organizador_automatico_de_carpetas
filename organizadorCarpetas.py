@@ -249,7 +249,7 @@ def clasificar_carpeta_recursivo(ruta_origen, ruta_destino, historial):
 
         ruta_completa = os.path.join(ruta_origen, elemento)
 
-        # comprobar si es una carpeta
+        # RECURSIVIDAD: si encuentra una subcarpeta vuelve a llamar a la funcion
         if os.path.isdir(ruta_completa):
 
             bytes_subcarpetas = clasificar_carpeta_recursivo(
@@ -280,6 +280,7 @@ def contar_archivos_recursivo(ruta):
 
     total_archivos = 0
 
+    # CASO BASE: si la ruta no es una carpeta devuelve cero
     if not os.path.isdir(ruta):
         return 0
 
@@ -288,7 +289,7 @@ def contar_archivos_recursivo(ruta):
 
         ruta_completa = os.path.join(ruta, elemento)
 
-        # entrar en subcarpetas
+        # RECURSIVIDAD: si encuentra una subcarpeta vuelve a llamarse para contar sus archivos
         if os.path.isdir(ruta_completa):
 
             total_archivos += contar_archivos_recursivo(ruta_completa)
