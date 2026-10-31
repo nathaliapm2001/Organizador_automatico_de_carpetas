@@ -356,6 +356,18 @@ def mostrar_informe(consola, movidos, tamano_total, en_origen, en_destino, histo
     consola.print(tabla_movimientos)
 
 
+# PROGRAMA PRUEBAS TAMANO_LEGIBLE
+if __name__ == "__main__":
+
+    console = Console()
+
+    # Pruebas de la función tamano_legible
+    console.print(tamano_legible(500))
+    console.print(tamano_legible(1024))
+    console.print(tamano_legible(2048576))
+    console.print(tamano_legible(1073741824))
+
+
 # PROGRAMA PRINCIPAL
 if __name__ == "__main__":
 
@@ -380,3 +392,4 @@ if __name__ == "__main__":
     en_destino = contar_archivos_recursivo(ruta_destino)
 
     mostrar_informe(console, movidos, tamano_total, en_origen, en_destino, historial)
+
